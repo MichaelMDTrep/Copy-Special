@@ -7,20 +7,30 @@
 # http://www.apache.org/licenses/LICENSE-2.0
 
 # give credits
-__author__ = "???"
+__author__ = "Michael Trepanier"
 
 import re
-import os
 import sys
 import shutil
 import subprocess
 import argparse
+import os.path
+# from os import listdir
 
 
 def get_special_paths(dirname):
     """Given a dirname, returns a list of all its special files."""
-    # your code here
-    return
+
+    file_list = os.listdir(dirname)
+    special_files = re.compile(r'_(\w+)_')
+    special_files = []
+    for file in file_list:
+        dirname = os.path.join('dirname', 'file')
+        if os.path.exists(dirname):
+            special_files.append(os.path.abspath(file))
+            return special_files
+        print(os.path.abspath(file))
+        print(file_list)
 
 
 def copy_to(path_list, dest_dir):
@@ -29,7 +39,13 @@ def copy_to(path_list, dest_dir):
 
 
 def zip_to(path_list, dest_zip):
-    # your code here
+
+    print(f"Command i'm going to do: \nzip -j {dest_zip}")
+
+    command_list = ['zip', '-j', dest_zip]
+    subprocess.run(
+        command_list,
+    )
     return
 
 
