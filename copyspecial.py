@@ -18,23 +18,42 @@ import os.path
 # from os import listdir
 
 
-def get_special_paths(dirname):
+def get_special_paths(dirs):
     """Given a dirname, returns a list of all its special files."""
 
-    file_list = os.listdir(dirname)
-    special_files = re.compile(r'_(\w+)_')
     special_files = []
-    for file in file_list:
-        dirname = os.path.join('dirname', 'file')
-        if os.path.exists(dirname):
-            special_files.append(os.path.abspath(file))
-            return special_files
-        print(os.path.abspath(file))
-        print(file_list)
+    print(dirs)
+    for dirname in dirs:
+        file_list = os.listdir(dirname)
+        # print(file_list)
+        for file in file_list:
+            # print(file)
+            parts = file.split('__')
+            # print(parts)
+            if (len(parts) >= 3):
+                print(file)
+                if (file in special_files):
+                    print(file+" is a duplicate")
+                    sys.exit(1)
+                else:
+                    special_files.append(file)
+
+    print(special_files)
+    return special_files
 
 
 def copy_to(path_list, dest_dir):
-    # your code here
+
+    path_list = os.listdir("/home/")
+    dest_dir = "/home/mtrepanier935/kenzie-q3/Copy-Special"
+    for files in path_list:
+        if files.endswith(".txt"):
+            shutil.copy(path_list, dest_dir)
+
+###########
+    shutil.copyfile(path_list, dest_dir)
+    print(path_list)
+
     return
 
 
@@ -55,8 +74,13 @@ def main(args):
     parser = argparse.ArgumentParser()
     parser.add_argument('--todir', help='dest dir for special files')
     parser.add_argument('--tozip', help='dest zipfile for special files')
+    parser.add_argument('dirs', help='directory(s) to search', nargs='+')
     # TODO: add one more argument definition to parse the 'from_dir' argument
     ns = parser.parse_args(args)
+    print(ns)
+
+    if (ns.dirs != None):
+        get_special_paths(ns.dirs)
 
     # TODO: you must write your own code to get the command line args.
     # Read the docs and examples for the argparse module about how to do this.
