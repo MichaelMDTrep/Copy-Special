@@ -7,7 +7,9 @@
 # http://www.apache.org/licenses/LICENSE-2.0
 
 # give credits
-__author__ = "Michael Trepanier"
+__author__ = """Michael Trepanier
+Had help from Piero, Daniel,J.T., and Joseph"""
+
 
 # import re
 import sys
