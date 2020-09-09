@@ -7,29 +7,61 @@
 # http://www.apache.org/licenses/LICENSE-2.0
 
 # give credits
-__author__ = "???"
+__author__ = """Michael Trepanier
+Had help from Piero, Daniel,J.T., and Joseph"""
 
-import re
-import os
+
+# import re
 import sys
 import shutil
-import subprocess
+# import subprocess
 import argparse
+import os
+# from zipfile import ZipFile
+# from os import listdir
 
 
 def get_special_paths(dirname):
     """Given a dirname, returns a list of all its special files."""
-    # your code here
-    return
+
+    special_files = []
+    dirname = os.path.abspath(dirname)
+    file_list = os.listdir(dirname)
+    for file in file_list:
+        parts = file.split('__')
+        if (len(parts) >= 3):
+
+            special_files.append(dirname+'/'+file)
+
+    # print(special_files)
+    return special_files
 
 
 def copy_to(path_list, dest_dir):
-    # your code here
-    return
+    """This copies to a new directory"""
+
+    os.makedirs(dest_dir, exist_ok=True)
+    if not os.path.isdir(dest_dir):
+        print(f"{dest_dir} is NOT a directory")
+        sys.exit(1)
+    for f in path_list:
+        shutil.copy(f, dest_dir)
 
 
 def zip_to(path_list, dest_zip):
-    # your code here
+    """This zips files with the destination directory"""
+    cmd_str = 'zip -j '+dest_zip
+    for file in path_list:
+        cmd_str = cmd_str+' '+file
+
+    # print('Command I am going to do:')
+    print(cmd_str)
+    # os.system(cmd_str)
+    stream = os.popen(cmd_str)
+    output = stream.read()
+    # subprocess.run(cmd_str)
+
+    print(output)
     return
 
 
@@ -39,8 +71,21 @@ def main(args):
     parser = argparse.ArgumentParser()
     parser.add_argument('--todir', help='dest dir for special files')
     parser.add_argument('--tozip', help='dest zipfile for special files')
+    parser.add_argument('dirs', help='directory(s) to search')
     # TODO: add one more argument definition to parse the 'from_dir' argument
     ns = parser.parse_args(args)
+
+    # print(ns)
+
+    if ns.dirs is not None:
+
+        special_paths = get_special_paths(ns.dirs)
+        print("\n".join(special_paths))
+    if ns.todir is not None:
+        copy_to(special_paths, ns.todir)
+
+    if ns.tozip is not None:
+        zip_to(special_paths, ns.tozip)
 
     # TODO: you must write your own code to get the command line args.
     # Read the docs and examples for the argparse module about how to do this.
